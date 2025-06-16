@@ -40,10 +40,52 @@ st.markdown("""
     }
     
     .metric-container {
-        background-color: #f0f2f6;
+        background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+        padding: 1.5rem;
+        border-radius: 15px;
+        margin: 1rem 0;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        border: 1px solid #e9ecef;
+        animation: fadeIn 0.5s ease-in;
+    }
+    
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .metric-item {
         padding: 1rem;
+        background: #ffffff;
         border-radius: 10px;
-        margin: 0.5rem 0;
+        border: 1px solid #eef2f7;
+        text-align: center;
+        transition: all 0.3s ease;
+    }
+    
+    .metric-item:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 6px 12px rgba(102, 126, 234, 0.1);
+    }
+    
+    .metric-label {
+        font-size: 0.9rem;
+        color: #6c757d;
+        margin-bottom: 0.3rem;
+        font-weight: 500;
+    }
+    
+    .metric-value {
+        font-size: 1.4rem;
+        color: #667eea;
+        font-weight: bold;
+        margin: 0;
+        animation: scaleIn 0.5s ease-out;
+    }
+    
+    @keyframes scaleIn {
+        from { transform: scale(0.8); opacity: 0; }
+        to { transform: scale(1); opacity: 1; }
     }
     
     .stButton > button {
@@ -216,11 +258,25 @@ def main():
                 
                 st.markdown(f"""
                 <div class="metric-container">
-                    <h4>Model Performance</h4>
-                    <p><strong>F1-Score:</strong> {metrics['f1_score']:.3f}</p>
-                    <p><strong>Precision:</strong> {metrics['precision']:.3f}</p>
-                    <p><strong>Recall:</strong> {metrics['recall']:.3f}</p>
-                    <p><strong>mAP@0.5:</strong> {metrics['map_50']:.3f}</p>
+                    <h4>Model Performance Metrics</h4>
+                    <div class="metric-grid">
+                        <div class="metric-item">
+                            <div class="metric-label">F1-Score</div>
+                            <div class="metric-value">{metrics['f1_score']:.3f}</div>
+                        </div>
+                        <div class="metric-item">
+                            <div class="metric-label">Precision</div>
+                            <div class="metric-value">{metrics['precision']:.3f}</div>
+                        </div>
+                        <div class="metric-item">
+                            <div class="metric-label">Recall</div>
+                            <div class="metric-value">{metrics['recall']:.3f}</div>
+                        </div>
+                        <div class="metric-item">
+                            <div class="metric-label">mAP@0.5</div>
+                            <div class="metric-value">{metrics['map_50']:.3f}</div>
+                        </div>
+                    </div>
                 </div>
                 """, unsafe_allow_html=True)
             
