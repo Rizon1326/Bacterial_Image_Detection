@@ -4,6 +4,14 @@ import plotly.express as px
 import plotly.graph_objects as go
 from PIL import Image
 
+# Define bacteria class names mapping
+BACTERIA_CLASSES = {
+    0: "G-cocci",
+    1: "G+cocci",
+    2: "G-bacilli",
+    3: "G+bacilli"
+}
+
 def display_results(results, show_labels=True, show_confidence=True):
     """Process and display YOLO results"""
     
@@ -11,6 +19,10 @@ def display_results(results, show_labels=True, show_confidence=True):
         return None, {'total_detections': 0}
     
     result = results[0]
+    
+    # Update the class names in the result object
+    if hasattr(result, 'names'):
+        result.names = BACTERIA_CLASSES
     
     # Get annotated image
     annotated_img = result.plot(
@@ -61,8 +73,9 @@ def extract_detection_data(result):
         # Detailed detection info
         for i in range(len(confidences)):
             x1, y1, x2, y2 = xyxy[i]
+            class_idx = int(classes[i])
             detection = [
-                f"Bacteria_{int(classes[i])}",
+                BACTERIA_CLASSES.get(class_idx, f"Unknown_{class_idx}"),  # Use mapped class name
                 float(confidences[i]),
                 float(x1), float(y1), float(x2), float(y2),
                 float(x2 - x1), float(y2 - y1)
